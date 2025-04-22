@@ -6,6 +6,8 @@ import SignUp from "../pages/SignUp/SignUp";
 import MainLayout from "../layouts/MainLayout";
 import AboutUs from "../pages/AboutUs/AboutUs";
 import Services from "../pages/Services/Services";
+import Projects from "../pages/Projects/Projects";
+import ProjectDetail from "../pages/Projects/ProjectDetail";
 
 export const router = createBrowserRouter([
   {
@@ -24,6 +26,14 @@ export const router = createBrowserRouter([
       {
         path: "/services",
         element: <Services />
+      },
+      {
+        path: "/projects",
+        element: <Projects />
+      },
+      {
+        path: "/projects/:id",
+        element: <ProjectDetail></ProjectDetail>
       }
     ],
   },
