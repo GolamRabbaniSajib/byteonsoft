@@ -3,7 +3,7 @@ import { FaArrowRight } from 'react-icons/fa';
 
 const Hero = () => {
   return (
-    <section className="relative bg-[#0a1f44] text-white px-6 py-32 md:py-40 overflow-hidden">
+    <section className="relative bg-[#0a1f44] text-white px-6 py-32 md:py-40 overflow-hidden min-h-screen">
       {/* Glow Effect */}
       <div className="absolute -top-20 -left-20 w-72 h-72 bg-teal-400 opacity-20 rounded-full blur-3xl animate-pulse"></div>
       <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-white opacity-10 rounded-full blur-3xl animate-ping"></div>
