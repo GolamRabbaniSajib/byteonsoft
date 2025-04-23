@@ -8,6 +8,8 @@ import AboutUs from "../pages/AboutUs/AboutUs";
 import Services from "../pages/Services/Services";
 import Projects from "../pages/Projects/Projects";
 import ProjectDetail from "../pages/Projects/ProjectDetail";
+import Blog from "../pages/Blogs/Blog";
+import BlogDetails from "../pages/Blogs/BlogDetails";
 
 export const router = createBrowserRouter([
   {
@@ -33,7 +35,15 @@ export const router = createBrowserRouter([
       },
       {
         path: "/projects/:id",
-        element: <ProjectDetail></ProjectDetail>
+        element: <ProjectDetail />
+      },
+      {
+        path: "/blog",
+        element: <Blog />
+      },
+      {
+        path: "/blogs/:id",
+        element: <BlogDetails />
       }
     ],
   },
