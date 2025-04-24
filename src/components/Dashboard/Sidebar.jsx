@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { AiOutlineBars } from "react-icons/ai";
 import {
-  MdPostAdd,
   MdContactMail,
   MdHomeRepairService,
   MdRateReview,
@@ -76,7 +75,7 @@ const Sidebar = () => {
               Content
             </li>
             <li>
-              <NavLink to="/dashboard/add-blog-post" className={linkStyle}>
+              <NavLink to="/dashboard/add-blog" className={linkStyle}>
                 <FaBlogger className="text-xl" />
                 Add Blog Post
               </NavLink>

@@ -13,6 +13,8 @@ import BlogDetails from "../pages/Blogs/BlogDetails";
 import Contact from "../pages/Contact/Contact";
 import DashboardLayout from "../layouts/DashboardLayout";
 import AddServices from "../pages/Dashboard/AddServices/AddServices";
+import AddBlog from "../pages/Dashboard/AddBlog/AddBlog";
+import AddTestimonial from "../pages/Dashboard/AddTestimonial/AddTestimonial";
 
 export const router = createBrowserRouter([
   {
@@ -61,6 +63,14 @@ export const router = createBrowserRouter([
       {
         path: "/dashboard/add-service",
         element: <AddServices />
+      },
+      {
+        path: "/dashboard/add-blog",
+        element: <AddBlog />
+      },
+      {
+        path: "/dashboard/add-testimonial",
+        element: <AddTestimonial />
       }
     ]
   },
