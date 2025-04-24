@@ -10,6 +10,9 @@ import Projects from "../pages/Projects/Projects";
 import ProjectDetail from "../pages/Projects/ProjectDetail";
 import Blog from "../pages/Blogs/Blog";
 import BlogDetails from "../pages/Blogs/BlogDetails";
+import Contact from "../pages/Contact/Contact";
+import DashboardLayout from "../layouts/DashboardLayout";
+import AddServices from "../pages/Dashboard/AddServices/AddServices";
 
 export const router = createBrowserRouter([
   {
@@ -44,8 +47,22 @@ export const router = createBrowserRouter([
       {
         path: "/blogs/:id",
         element: <BlogDetails />
+      },
+      {
+        path: "/contact",
+        element: <Contact />
       }
     ],
+  },
+  {
+    path: "/dashboard",
+    element: <DashboardLayout />,
+    children: [
+      {
+        path: "/dashboard/add-service",
+        element: <AddServices />
+      }
+    ]
   },
   { path: "/login", element: <Login /> },
   { path: "/signup", element: <SignUp /> },
