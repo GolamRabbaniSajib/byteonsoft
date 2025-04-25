@@ -49,9 +49,11 @@ const Projects = () => {
   return (
     <section className="bg-white py-20 px-6 md:px-10 lg:px-20">
       <div className="max-w-7xl mx-auto text-center space-y-12">
-        <h2 className="text-4xl md:text-5xl font-bold text-[#0a1f44] animate-fade-in-up">
-          Recent Projects
-        </h2>
+        <header>
+          <h2 className="text-4xl md:text-5xl font-bold text-[#0a1f44] animate-fade-in-up">
+            Recent Projects
+          </h2>
+        </header>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects.map((project) => (
@@ -61,7 +63,7 @@ const Projects = () => {
             >
               <img
                 src={project.image}
-                alt={project.title}
+                alt={`${project.title} project screenshot`}
                 className="w-full h-48 object-cover"
               />
               <div className="p-6 text-left">
@@ -82,6 +84,7 @@ const Projects = () => {
                 <Link
                   to={`/projects/${project.id}`}
                   className="inline-block mt-4 text-teal-600 font-medium hover:underline"
+                  aria-label={`View more details about ${project.title} project`}
                 >
                   View Details →
                 </Link>

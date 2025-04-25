@@ -1,4 +1,5 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
+import { useEffect } from "react";
 
 const ProjectDetail = () => {
   const projects = [
@@ -49,27 +50,47 @@ const ProjectDetail = () => {
   const { id } = useParams();
   const project = projects.find((p) => p.id === parseInt(id));
 
-  if (!project)
-    return <div className="text-center py-20">Project not found.</div>;
+  useEffect(() => {
+    if (project) {
+      document.title = `${project.title} - Project Details`; // Dynamically setting the page title for SEO
+    }
+  }, [project]);
+
+  if (!project) {
+    return (
+      <div className="text-center py-20">
+        <p>Project not found. <Link to="/" className="text-teal-600">Go back to the homepage</Link>.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-5xl mx-auto px-6 py-16">
       <img
         src={project.image}
-        alt={project.title}
-        className="w-full rounded-xl mb-6"
+        alt={`${project.title} project screenshot`}
+        className="w-full rounded-xl mb-6 transform transition-all duration-500 hover:scale-105"
+        loading="lazy" // Adds lazy loading for performance optimization
       />
-      <h1 className="text-3xl font-bold text-[#0a1f44]">{project.title}</h1>
+      <h1 className="text-3xl md:text-4xl font-bold text-[#0a1f44] tracking-wide">{project.title}</h1>
       <p className="mt-4 text-gray-700">{project.desc}</p>
       <div className="mt-6 flex flex-wrap gap-2">
         {project.tech.map((tech, i) => (
           <span
             key={i}
-            className="bg-teal-100 text-teal-800 px-3 py-1 text-sm rounded-full"
+            className="bg-teal-100 text-teal-800 px-3 py-1 text-sm rounded-full shadow-md transform transition-all duration-300 hover:bg-teal-200"
           >
             {tech}
           </span>
         ))}
+      </div>
+      <div className="mt-8 text-center">
+        <Link
+          to="/projects"
+          className="inline-block px-6 py-3 bg-teal-500 text-white rounded-full hover:bg-teal-600 transition-all duration-300"
+        >
+          Back to Projects
+        </Link>
       </div>
     </div>
   );
