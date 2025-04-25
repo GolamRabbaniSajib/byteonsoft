@@ -15,6 +15,9 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import AddServices from "../pages/Dashboard/AddServices/AddServices";
 import AddBlog from "../pages/Dashboard/AddBlog/AddBlog";
 import AddTestimonial from "../pages/Dashboard/AddTestimonial/AddTestimonial";
+import AddTeamMember from "../pages/Dashboard/AddTeamMember/AddTeamMember";
+import ContactInbox from "../pages/Dashboard/ContactInbox/ContactInbox";
+import Sections from "../pages/Dashboard/Sections/Sections";
 
 export const router = createBrowserRouter([
   {
@@ -71,6 +74,18 @@ export const router = createBrowserRouter([
       {
         path: "/dashboard/add-testimonial",
         element: <AddTestimonial />
+      },
+      {
+        path: "/dashboard/add-team-member",
+        element: <AddTeamMember />
+      },
+      {
+        path: "/dashboard/contact-inbox",
+        element: <ContactInbox />
+      },
+      {
+        path: "/dashboard/homepage-sections",
+        element: <Sections />
       }
     ]
   },
