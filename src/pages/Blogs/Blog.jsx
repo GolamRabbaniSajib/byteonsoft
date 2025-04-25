@@ -43,6 +43,7 @@ const Blog = () => {
                   src={blog.image}
                   alt={blog.title}
                   className="w-full h-52 object-cover group-hover:scale-105 transition-transform duration-500"
+                  loading="lazy" // For SEO & performance optimization
                 />
               </div>
               <div className="p-6">

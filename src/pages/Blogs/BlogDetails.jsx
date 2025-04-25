@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 
 const BlogDetails = () => {
   const blogs = [
@@ -42,29 +43,40 @@ const BlogDetails = () => {
     );
 
   return (
-    <section className="max-w-5xl mx-auto px-4 sm:px-8 pb-16 pt-24 animate-fade-in">
-      <div className="overflow-hidden rounded-3xl shadow-lg">
-        <img
-          src={blog.image}
-          alt={blog.title}
-          className="w-full h-[250px] sm:h-[400px] object-cover hover:scale-105 transition-transform duration-700 ease-in-out"
-        />
-      </div>
+    <>
+      <Helmet>
+        <title>{blog.title}</title>
+        <meta name="description" content={blog.excerpt} />
+        <meta property="og:title" content={blog.title} />
+        <meta property="og:description" content={blog.excerpt} />
+        <meta property="og:image" content={blog.image} />
+        <meta property="og:type" content="article" />
+      </Helmet>
+      <section className="max-w-5xl mx-auto px-4 sm:px-8 pb-16 pt-24 animate-fade-in">
+        <div className="overflow-hidden rounded-3xl shadow-lg">
+          <img
+            src={blog.image}
+            alt={blog.title}
+            className="w-full h-[250px] sm:h-[400px] object-cover hover:scale-105 transition-transform duration-700 ease-in-out"
+            loading="lazy" // For performance and SEO
+          />
+        </div>
 
-      <div className="mt-8">
-        <p className="text-sm text-gray-500 mb-2">
-          {blog.date} • by{" "}
-          <span className="text-blue-600 font-medium">{blog.author}</span>
-        </p>
-        <h1 className="text-4xl sm:text-5xl font-bold text-[#0a1f44] leading-tight mb-6">
-          {blog.title}
-        </h1>
+        <div className="mt-8">
+          <p className="text-sm text-gray-500 mb-2">
+            {blog.date} • by{" "}
+            <span className="text-blue-600 font-medium">{blog.author}</span>
+          </p>
+          <h1 className="text-4xl sm:text-5xl font-bold text-[#0a1f44] leading-tight mb-6">
+            {blog.title}
+          </h1>
 
-        <article className="text-gray-700 text-lg leading-relaxed whitespace-pre-line">
-          {blog.content}
-        </article>
-      </div>
-    </section>
+          <article className="text-gray-700 text-lg leading-relaxed whitespace-pre-line">
+            {blog.content}
+          </article>
+        </div>
+      </section>
+    </>
   );
 };
 
