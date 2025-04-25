@@ -2,7 +2,7 @@ import { FaBullseye, FaEye } from "react-icons/fa";
 
 const MissionVision = () => {
   return (
-    <section className="bg-[#0a1f44] rounded-md text-white py-20 px-6 md:px-10 lg:px-20">
+    <section className="bg-[#0a1f44] py-20 px-6 md:px-10 lg:px-20 text-white">
       <div className="max-w-6xl mx-auto text-center space-y-12">
         <h2 className="text-4xl md:text-5xl font-bold text-teal-400 animate-fade-in-up duration-700">
           Our Mission & Vision

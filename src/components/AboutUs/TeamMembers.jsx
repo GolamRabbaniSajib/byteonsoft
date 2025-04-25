@@ -1,3 +1,5 @@
+import { FaCode, FaUsers } from "react-icons/fa";
+
 const teamData = [
   {
     name: "Md. Golam Rabbani Sajib",
@@ -43,11 +45,19 @@ const TeamMembers = () => {
             >
               <img
                 src={member.img}
-                alt={member.name}
+                alt={`${member.name} - ${member.role}`}
                 className="w-24 h-24 mx-auto rounded-full border-4 border-teal-400 mb-4"
               />
               <h3 className="text-xl font-semibold">{member.name}</h3>
-              <p className="text-teal-300 mb-2">{member.role}</p>
+              <div className="flex justify-center gap-2 mb-2">
+                {member.role === "Frontend Developer" && (
+                  <FaCode className="text-teal-400 text-xl" />
+                )}
+                {member.role === "Project Manager" && (
+                  <FaUsers className="text-teal-400 text-xl" />
+                )}
+                <p className="text-teal-300">{member.role}</p>
+              </div>
               <p className="text-gray-300 text-sm">{member.intro}</p>
             </div>
           ))}
