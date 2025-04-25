@@ -1,15 +1,4 @@
-import {
-  FaCode,
-  FaMobileAlt,
-  FaPaintBrush,
-  FaCloud,
-  FaDatabase,
-  FaLaptopCode,
-  FaServer,
-  FaLock,
-  FaRocket,
-  FaChartLine,
-} from "react-icons/fa";
+import { FaCode, FaMobileAlt, FaPaintBrush, FaCloud, FaDatabase, FaLaptopCode, FaServer, FaLock, FaRocket, FaChartLine } from "react-icons/fa";
 
 const services = [
   {
@@ -74,17 +63,17 @@ const Services = () => {
         {/* Service Cards */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {services.map((service, index) => (
-            <div
+            <article
               key={index}
               className="p-6 bg-white rounded-lg shadow-md transform transition-all hover:scale-105 hover:shadow-xl"
+              aria-labelledby={`service-${index}`}
             >
-              {/* Icon */}
-              <div className="mb-4">{service.icon}</div>
-              <h3 className="text-2xl font-semibold text-[#0a1f44] mb-3">
-                {service.title}
-              </h3>
+              <header className="mb-4" id={`service-${index}`}>
+                {service.icon}
+                <h3 className="text-2xl font-semibold text-[#0a1f44] mb-3">{service.title}</h3>
+              </header>
               <p className="text-gray-600">{service.desc}</p>
-            </div>
+            </article>
           ))}
         </div>
       </div>
