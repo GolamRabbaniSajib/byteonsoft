@@ -23,7 +23,6 @@ const AddBlog = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       const response = await fetch("https://your-api-url.com/blogs", {
         method: "POST",
@@ -51,73 +50,82 @@ const AddBlog = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-xl shadow-md mt-6">
-      <h2 className="text-2xl font-bold text-gray-700 mb-6">Add Blog Post</h2>
-      <form onSubmit={handleSubmit} className="space-y-5">
+    <div className="max-w-4xl mx-auto p-8 bg-white rounded-2xl shadow-lg mt-10">
+      <h2 className="text-3xl font-semibold text-navy-800 mb-8 border-b pb-3">📝 Add Blog Post</h2>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Title */}
         <div>
-          <label className="font-medium block mb-1">Title</label>
+          <label className="block mb-2 text-sm font-medium text-navy-800">Title</label>
           <input
             type="text"
             name="title"
             value={formData.title}
             onChange={handleChange}
             required
-            className="w-full border border-gray-300 px-4 py-2 rounded-md focus:ring-yellow-400 focus:outline-none"
+            className="w-full border border-gray-300 px-4 py-2 rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none"
+            placeholder="Enter blog title"
           />
         </div>
 
+        {/* Image */}
         <div>
-          <label className="font-medium block mb-1">Image URL</label>
+          <label className="block mb-2 text-sm font-medium text-navy-800">Image URL</label>
           <input
             type="text"
             name="image"
             value={formData.image}
             onChange={handleChange}
             required
-            className="w-full border border-gray-300 px-4 py-2 rounded-md focus:ring-yellow-400 focus:outline-none"
+            className="w-full border border-gray-300 px-4 py-2 rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none"
+            placeholder="Paste image link"
           />
         </div>
 
+        {/* Author */}
         <div>
-          <label className="font-medium block mb-1">Author</label>
+          <label className="block mb-2 text-sm font-medium text-navy-800">Author</label>
           <input
             type="text"
             name="author"
             value={formData.author}
             onChange={handleChange}
-            className="w-full border border-gray-300 px-4 py-2 rounded-md focus:ring-yellow-400 focus:outline-none"
+            className="w-full border border-gray-300 px-4 py-2 rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none"
           />
         </div>
 
+        {/* Excerpt */}
         <div>
-          <label className="font-medium block mb-1">Excerpt</label>
+          <label className="block mb-2 text-sm font-medium text-navy-800">Excerpt</label>
           <textarea
             name="excerpt"
             value={formData.excerpt}
             onChange={handleChange}
             rows="2"
             required
-            className="w-full border border-gray-300 px-4 py-2 rounded-md resize-none focus:ring-yellow-400 focus:outline-none"
+            className="w-full border border-gray-300 px-4 py-2 rounded-lg resize-none focus:ring-2 focus:ring-teal-500 focus:outline-none"
+            placeholder="Short summary of the blog..."
           />
         </div>
 
+        {/* Full Content */}
         <div>
-          <label className="font-medium block mb-1">Full Content</label>
+          <label className="block mb-2 text-sm font-medium text-navy-800">Full Content</label>
           <textarea
             name="content"
             value={formData.content}
             onChange={handleChange}
-            rows="6"
+            rows="8"
             required
-            className="w-full border border-gray-300 px-4 py-2 rounded-md focus:ring-yellow-400 focus:outline-none"
+            className="w-full border border-gray-300 px-4 py-2 rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none"
+            placeholder="Write your blog post here..."
           />
         </div>
 
         <button
           type="submit"
-          className="bg-yellow-500 text-white font-semibold px-6 py-2 rounded-md hover:bg-yellow-600 transition"
+          className="bg-teal-600 text-white font-semibold px-6 py-2 rounded-lg hover:bg-teal-700 transition duration-200"
         >
-          Publish Blog
+          🚀 Publish Blog
         </button>
       </form>
     </div>
