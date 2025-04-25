@@ -5,44 +5,52 @@ const Projects = () => {
     {
       id: 1,
       title: "Neurolingva",
-      image: "/images/neurolingva.png",
-      desc: "AI-powered language learning app using spaced repetition and speech feedback.",
-      tech: ["React", "Tailwind", "MongoDB", "Node.js"],
+      description:
+        "A neuroscience-powered language learning app using spaced repetition, interactive quizzes, and pronunciation feedback.",
+      image: "https://i.ibb.co/ZVR6WPF/neurolingva.png",
+      liveLink: "https://neurolingva.vercel.app",
+      githubLink: "https://github.com/neurolingva/app",
+      tech: ["React.js", "Tailwind CSS", "Node.js", "MongoDB", "Google Cloud"],
     },
     {
       id: 2,
-      title: "Parcel Management",
-      image: "/images/parcel.png",
-      desc: "Real-time logistics dashboard for tracking deliveries and user management.",
-      tech: ["React", "Express", "MongoDB", "Socket.io"],
+      title: "Parcel Pulse",
+      description:
+        "A parcel management system for tracking deliveries and managing shipments with a user-friendly dashboard.",
+      image: "https://i.ibb.co/DgY1DwS/parcel-pulse.png",
+      liveLink: "https://parcelpulse.netlify.app",
+      githubLink: "https://github.com/sajibdev/parcel-pulse",
+      tech: ["Express.js", "MongoDB", "React.js", "Firebase", "JWT"],
     },
     {
       id: 3,
       title: "Moodify",
-      image: "/images/moodify.png",
-      desc: "Mood-based content recommendation platform with modern UI and animations.",
-      tech: ["Next.js", "Tailwind", "Supabase"],
+      description:
+        "A mood-based recommendation platform that suggests content based on your emotions using sentiment analysis.",
+      image: "https://i.ibb.co/M7tvF3X/moodify.png",
+      liveLink: "https://moodify.me",
+      githubLink: "https://github.com/sajibdev/moodify",
+      tech: ["Next.js", "Tailwind", "Supabase", "OpenAI API"],
     },
     {
       id: 4,
-      title: "Interactive Quiz Platform",
-      image: "/images/quiz.png",
-      desc: "Gamified quiz experience with instant feedback and IndexedDB history.",
-      tech: ["React", "Tailwind", "IndexedDB"],
+      title: "TaskFlow",
+      description:
+        "A real-time task management tool with drag-and-drop functionality, Firebase authentication, and dark mode support.",
+      image: "https://i.ibb.co/jrwCzFz/taskflow.png",
+      liveLink: "https://taskflow.app",
+      githubLink: "https://github.com/sajibdev/taskflow",
+      tech: ["Vite.js", "React", "Firebase", "Tailwind CSS", "MongoDB"],
     },
     {
       id: 5,
-      title: "Task Manager App",
-      image: "/images/task.png",
-      desc: "Drag-and-drop task manager with Google auth and real-time syncing.",
-      tech: ["Vite", "Firebase", "MongoDB", "Tailwind"],
-    },
-    {
-      id: 6,
       title: "ByteonSoft Portfolio",
-      image: "/images/byteonsoft.png",
-      desc: "Dynamic company portfolio site with admin dashboard and services listing.",
-      tech: ["React", "Django", "PostgreSQL"],
+      description:
+        "A full-featured dynamic portfolio website for ByteonSoft, complete with admin dashboard and content management.",
+      image: "https://i.ibb.co/YWjBk1x/byteonsoft.png",
+      liveLink: "https://byteonsoft.com",
+      githubLink: "https://github.com/sajibdev/byteonsoft-portfolio",
+      tech: ["React", "Tailwind CSS", "Django", "PostgreSQL", "Tawk.to"],
     },
   ];
 
@@ -63,14 +71,16 @@ const Projects = () => {
             >
               <img
                 src={project.image}
-                alt={`${project.title} project screenshot`}
+                alt={project.title}
                 className="w-full h-48 object-cover"
               />
               <div className="p-6 text-left">
                 <h3 className="text-xl font-semibold text-[#0a1f44]">
                   {project.title}
                 </h3>
-                <p className="text-gray-600 mt-2 text-sm">{project.desc}</p>
+                <p className="text-gray-600 mt-2 text-sm">
+                  {project.description}
+                </p>
                 <div className="flex flex-wrap gap-2 mt-4">
                   {project.tech.map((tech, i) => (
                     <span
@@ -81,13 +91,31 @@ const Projects = () => {
                     </span>
                   ))}
                 </div>
-                <Link
-                  to={`/projects/${project.id}`}
-                  className="inline-block mt-4 text-teal-600 font-medium hover:underline"
-                  aria-label={`View more details about ${project.title} project`}
-                >
-                  View Details →
-                </Link>
+
+                <div className="mt-6 flex flex-wrap gap-3">
+                  <a
+                    href={project.liveLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-4 py-2 bg-teal-600 text-white text-sm rounded-md hover:bg-teal-700 transition"
+                  >
+                    Live Site
+                  </a>
+                  <a
+                    href={project.githubLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-4 py-2 bg-gray-800 text-white text-sm rounded-md hover:bg-gray-900 transition"
+                  >
+                    GitHub
+                  </a>
+                  <Link
+                    to={`/projects/${project.id}`}
+                    className="px-4 py-2 border border-teal-600 text-teal-700 text-sm rounded-md hover:bg-teal-50 transition"
+                  >
+                    View Details
+                  </Link>
+                </div>
               </div>
             </div>
           ))}
