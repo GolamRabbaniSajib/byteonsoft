@@ -18,6 +18,7 @@ import AddTestimonial from "../pages/Dashboard/AddTestimonial/AddTestimonial";
 import AddTeamMember from "../pages/Dashboard/AddTeamMember/AddTeamMember";
 import ContactInbox from "../pages/Dashboard/ContactInbox/ContactInbox";
 import Sections from "../pages/Dashboard/Sections/Sections";
+import AddProject from "../pages/Dashboard/AddProject/AddProject";
 
 export const router = createBrowserRouter([
   {
@@ -86,6 +87,10 @@ export const router = createBrowserRouter([
       {
         path: "/dashboard/homepage-sections",
         element: <Sections />
+      },
+      {
+        path: "/dashboard/add-project",
+        element: <AddProject />
       }
     ]
   },
