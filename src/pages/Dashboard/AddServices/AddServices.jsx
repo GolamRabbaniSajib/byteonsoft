@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   FaCode,
   FaDesktop,
@@ -26,7 +26,7 @@ import {
 const AddServices = () => {
   const [serviceData, setServiceData] = useState({
     title: "",
-    icon: "FaCode", // Default icon
+    icon: "Web Development",
     description: "",
   });
 
@@ -41,181 +41,107 @@ const AddServices = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Submit the data (e.g., POST to backend API)
     console.log("Service Submitted:", serviceData);
-
-    // Reset the form
-    setServiceData({
-      title: "",
-      icon: "FaCode",
-      description: "",
-    });
-
-    // Optional: Show a success message
+    setServiceData({ title: "", icon: "Web Development", description: "" });
     alert("Service added successfully!");
   };
 
   const icons = [
-    {
-      name: "Web Development",
-      icon: <FaCode className="text-3xl text-teal-400" />,
-    },
-    {
-      name: "UI/UX Design",
-      icon: <FaDesktop className="text-3xl text-teal-400" />,
-    },
-    {
-      name: "Mobile App Development",
-      icon: <FaMobileAlt className="text-3xl text-teal-400" />,
-    },
-    {
-      name: "Backend Development",
-      icon: <FaServer className="text-3xl text-teal-400" />,
-    },
-    {
-      name: "Database Management",
-      icon: <FaDatabase className="text-3xl text-teal-400" />,
-    },
-    {
-      name: "Cloud Services",
-      icon: <FaCloud className="text-3xl text-teal-400" />,
-    },
-    {
-      name: "Graphic Design",
-      icon: <FaPaintBrush className="text-3xl text-teal-400" />,
-    },
-    {
-      name: "Security Services",
-      icon: <FaLock className="text-3xl text-teal-400" />,
-    },
-    {
-      name: "SEO Services",
-      icon: <FaSearch className="text-3xl text-teal-400" />,
-    },
-    {
-      name: "Digital Marketing",
-      icon: <FaBullhorn className="text-3xl text-teal-400" />,
-    },
-    {
-      name: "Software Testing",
-      icon: <FaClipboardCheck className="text-3xl text-teal-400" />,
-    },
-    {
-      name: "Global Services",
-      icon: <FaGlobe className="text-3xl text-teal-400" />,
-    },
-    {
-      name: "E-commerce Development",
-      icon: <FaLaptopCode className="text-3xl text-teal-400" />,
-    },
-    {
-      name: "Content Writing",
-      icon: <FaPen className="text-3xl text-teal-400" />,
-    },
-    {
-      name: "AI Development",
-      icon: <FaRobot className="text-3xl text-teal-400" />,
-    },
-    {
-      name: "Blockchain Development",
-      icon: <FaCube className="text-3xl text-teal-400" />,
-    },
-    {
-      name: "Augmented Reality (AR)",
-      icon: <FaMicrochip className="text-3xl text-teal-400" />,
-    },
-    {
-      name: "Virtual Reality (VR)",
-      icon: <FaVrCardboard className="text-3xl text-teal-400" />,
-    },
-    {
-      name: "Biometric Authentication",
-      icon: <FaFingerprint className="text-3xl text-teal-400" />,
-    },
-    {
-      name: "Cybersecurity",
-      icon: <FaUserShield className="text-3xl text-teal-400" />,
-    },
-    {
-      name: "Consulting",
-      icon: <FaUsersCog className="text-3xl text-teal-400" />,
-    },
+    { name: "Web Development", icon: <FaCode /> },
+    { name: "UI/UX Design", icon: <FaDesktop /> },
+    { name: "Mobile App Development", icon: <FaMobileAlt /> },
+    { name: "Backend Development", icon: <FaServer /> },
+    { name: "Database Management", icon: <FaDatabase /> },
+    { name: "Cloud Services", icon: <FaCloud /> },
+    { name: "Graphic Design", icon: <FaPaintBrush /> },
+    { name: "Security Services", icon: <FaLock /> },
+    { name: "SEO Services", icon: <FaSearch /> },
+    { name: "Digital Marketing", icon: <FaBullhorn /> },
+    { name: "Software Testing", icon: <FaClipboardCheck /> },
+    { name: "Global Services", icon: <FaGlobe /> },
+    { name: "E-commerce Development", icon: <FaLaptopCode /> },
+    { name: "Content Writing", icon: <FaPen /> },
+    { name: "AI Development", icon: <FaRobot /> },
+    { name: "Blockchain Development", icon: <FaCube /> },
+    { name: "Augmented Reality (AR)", icon: <FaMicrochip /> },
+    { name: "Virtual Reality (VR)", icon: <FaVrCardboard /> },
+    { name: "Biometric Authentication", icon: <FaFingerprint /> },
+    { name: "Cybersecurity", icon: <FaUserShield /> },
+    { name: "Consulting", icon: <FaUsersCog /> },
   ];
 
   return (
-    <div className="max-w-4xl mx-auto bg-white p-6 rounded shadow-lg">
-      <h2 className="text-3xl font-semibold mb-6 text-center">
-        Add New Service
-      </h2>
+    <section className="max-w-5xl mx-auto px-4 py-10 font-[Poppins]">
+      <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12">
+        <h1 className="text-3xl md:text-4xl font-semibold text-center text-navy mb-8">
+          Add New Service
+        </h1>
 
-      {/* Form */}
-      <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Title */}
-        <div>
-          <label className="block mb-1 font-medium text-gray-700">
-            Service Title
-          </label>
-          <input
-            type="text"
-            name="title"
-            value={serviceData.title}
-            onChange={handleChange}
-            placeholder="e.g., Web Development"
-            className="w-full border px-4 py-3 rounded focus:outline-none focus:ring-2 focus:ring-teal-500"
-            required
-          />
-        </div>
-
-        {/* Icons */}
-        <div>
-          <label className="block mb-1 font-medium text-gray-700">
-            Select Icon
-          </label>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
-            {icons.map((iconItem, index) => (
-              <button
-                key={index}
-                type="button"
-                onClick={() => handleIconChange(iconItem.name)}
-                className={`p-4 border rounded-lg flex flex-col items-center justify-center transition duration-300 ease-in-out hover:bg-teal-100 ${
-                  serviceData.icon === iconItem.name
-                    ? "bg-teal-200"
-                    : "bg-gray-100"
-                }`}
-              >
-                {iconItem.icon}
-                <p className="text-sm mt-2 text-center">{iconItem.name}</p>
-              </button>
-            ))}
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label className="block mb-2 font-medium text-navy">
+              Service Title
+            </label>
+            <input
+              type="text"
+              name="title"
+              value={serviceData.title}
+              onChange={handleChange}
+              placeholder="e.g., Web Development"
+              className="w-full border border-teal-300 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
+              required
+            />
           </div>
-        </div>
 
-        {/* Description */}
-        <div>
-          <label className="block mb-1 font-medium text-gray-700">
-            Description
-          </label>
-          <textarea
-            name="description"
-            value={serviceData.description}
-            onChange={handleChange}
-            placeholder="Enter a brief description"
-            rows="4"
-            className="w-full border px-4 py-3 rounded focus:outline-none focus:ring-2 focus:ring-teal-500"
-            required
-          ></textarea>
-        </div>
+          <div>
+            <label className="block mb-2 font-medium text-navy">
+              Select Icon
+            </label>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+              {icons.map((item, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => handleIconChange(item.name)}
+                  className={`border rounded-xl flex flex-col items-center justify-center p-4 transition duration-300 ease-in-out ${
+                    serviceData.icon === item.name
+                      ? "bg-teal-100 border-teal-500"
+                      : "bg-gray-100 hover:bg-teal-50"
+                  }`}
+                >
+                  <div className="text-3xl text-teal-500">{item.icon}</div>
+                  <span className="text-sm text-navy mt-2 text-center">
+                    {item.name}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
 
-        {/* Submit Button */}
-        <button
-          type="submit"
-          className="w-full bg-teal-600 hover:bg-teal-700 text-white px-6 py-3 rounded-lg transition"
-        >
-          Add Service
-        </button>
-      </form>
-    </div>
+          <div>
+            <label className="block mb-2 font-medium text-navy">
+              Description
+            </label>
+            <textarea
+              name="description"
+              value={serviceData.description}
+              onChange={handleChange}
+              placeholder="Enter a brief description"
+              rows="4"
+              className="w-full border border-teal-300 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
+              required
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-3 rounded-lg transition shadow-sm"
+          >
+            Add Service
+          </button>
+        </form>
+      </div>
+    </section>
   );
 };
 
