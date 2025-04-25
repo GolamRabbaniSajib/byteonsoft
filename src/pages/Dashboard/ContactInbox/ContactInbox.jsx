@@ -31,61 +31,72 @@ const ContactInbox = () => {
   };
 
   return (
-    <div className="p-6 md:p-10 bg-gray-50 min-h-screen">
-      <h2 className="text-3xl font-bold mb-6 flex items-center gap-2 text-[#0a1f44]">
-        <FaEnvelopeOpenText className="text-teal-500" />
-        Inbox Messages
-      </h2>
+    <div className="bg-white text-gray-900 font-inter min-h-screen">
+      <header className="bg-navy py-6 px-4 text-white">
+        <h1 className="text-3xl font-semibold flex items-center gap-2">
+          <FaEnvelopeOpenText className="text-teal-500" />
+          Inbox Messages
+        </h1>
+      </header>
 
-      {messages.length === 0 ? (
-        <p className="text-gray-600 text-lg">No messages in your inbox.</p>
-      ) : (
-        <div className="overflow-x-auto bg-white rounded-lg shadow-lg">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-teal-100">
-              <tr>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">
-                  S/N
-                </th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">
-                  Name
-                </th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">
-                  Email
-                </th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">
-                  Subject
-                </th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">
-                  Date
-                </th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {messages.map((msg, index) => (
-                <tr key={msg.id} className="hover:bg-gray-50 transition">
-                  <td className="px-6 py-4">{index + 1}</td>
-                  <td className="px-6 py-4">{msg.name}</td>
-                  <td className="px-6 py-4">{msg.email}</td>
-                  <td className="px-6 py-4">{msg.subject}</td>
-                  <td className="px-6 py-4">{msg.date}</td>
-                  <td className="px-6 py-4">
-                    <button
-                      onClick={() => handleDelete(msg.id)}
-                      className="text-red-500 hover:text-red-700 transition"
-                    >
-                      <FaTrashAlt />
-                    </button>
-                  </td>
+      <main className="p-6 md:p-10">
+        {messages.length === 0 ? (
+          <p className="text-lg text-gray-600">No messages in your inbox.</p>
+        ) : (
+          <div className="overflow-x-auto bg-white rounded-lg shadow-lg mt-8">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-teal-100">
+                <tr>
+                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">
+                    S/N
+                  </th>
+                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">
+                    Name
+                  </th>
+                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">
+                    Email
+                  </th>
+                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">
+                    Subject
+                  </th>
+                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">
+                    Date
+                  </th>
+                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">
+                    Actions
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {messages.map((msg, index) => (
+                  <tr
+                    key={msg.id}
+                    className="hover:bg-gray-50 transition duration-300 ease-in-out"
+                  >
+                    <td className="px-6 py-4">{index + 1}</td>
+                    <td className="px-6 py-4">{msg.name}</td>
+                    <td className="px-6 py-4">{msg.email}</td>
+                    <td className="px-6 py-4">{msg.subject}</td>
+                    <td className="px-6 py-4">{msg.date}</td>
+                    <td className="px-6 py-4">
+                      <button
+                        onClick={() => handleDelete(msg.id)}
+                        className="text-red-500 hover:text-red-700 transition duration-200"
+                      >
+                        <FaTrashAlt />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </main>
+
+      <footer className="bg-navy text-white text-center py-4 mt-10">
+        <p>&copy; 2025 ByteonSoft | All rights reserved</p>
+      </footer>
     </div>
   );
 };
