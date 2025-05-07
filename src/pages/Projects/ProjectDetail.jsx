@@ -1,62 +1,28 @@
 import { useParams, Link } from "react-router-dom";
 import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { toast } from "react-hot-toast";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
+import LoadingSpinner from "../../components/Shared/LoadingSpinner";
 
 const ProjectDetail = () => {
-  const projects = [
-    {
-      id: 1,
-      title: "Neurolingva",
-      description:
-        "A neuroscience-powered language learning app using spaced repetition, interactive quizzes, and pronunciation feedback.",
-      image: "https://i.ibb.co/ZVR6WPF/neurolingva.png",
-      liveLink: "https://neurolingva.vercel.app",
-      githubLink: "https://github.com/neurolingva/app",
-      tech: ["React.js", "Tailwind CSS", "Node.js", "MongoDB", "Google Cloud"],
-    },
-    {
-      id: 2,
-      title: "Parcel Pulse",
-      description:
-        "A parcel management system for tracking deliveries and managing shipments with a user-friendly dashboard.",
-      image: "https://i.ibb.co/DgY1DwS/parcel-pulse.png",
-      liveLink: "https://parcelpulse.netlify.app",
-      githubLink: "https://github.com/sajibdev/parcel-pulse",
-      tech: ["Express.js", "MongoDB", "React.js", "Firebase", "JWT"],
-    },
-    {
-      id: 3,
-      title: "Moodify",
-      description:
-        "A mood-based recommendation platform that suggests content based on your emotions using sentiment analysis.",
-      image: "https://i.ibb.co/M7tvF3X/moodify.png",
-      liveLink: "https://moodify.me",
-      githubLink: "https://github.com/sajibdev/moodify",
-      tech: ["Next.js", "Tailwind", "Supabase", "OpenAI API"],
-    },
-    {
-      id: 4,
-      title: "TaskFlow",
-      description:
-        "A real-time task management tool with drag-and-drop functionality, Firebase authentication, and dark mode support.",
-      image: "https://i.ibb.co/jrwCzFz/taskflow.png",
-      liveLink: "https://taskflow.app",
-      githubLink: "https://github.com/sajibdev/taskflow",
-      tech: ["Vite.js", "React", "Firebase", "Tailwind CSS", "MongoDB"],
-    },
-    {
-      id: 5,
-      title: "ByteonSoft Portfolio",
-      description:
-        "A full-featured dynamic portfolio website for ByteonSoft, complete with admin dashboard and content management.",
-      image: "https://i.ibb.co/YWjBk1x/byteonsoft.png",
-      liveLink: "https://byteonsoft.com",
-      githubLink: "https://github.com/sajibdev/byteonsoft-portfolio",
-      tech: ["React", "Tailwind CSS", "Django", "PostgreSQL", "Tawk.to"],
-    },
-  ];
-
   const { id } = useParams();
-  const project = projects.find((p) => p.id === parseInt(id));
+  const axiosPublic = useAxiosPublic();
+
+  const {
+    data: project,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["project", id],
+    queryFn: async () => {
+      const res = await axiosPublic.get(`/project/${id}`);
+      return res.data;
+    },
+    onError: () => toast.error("Failed to load project details."),
+    enabled: !!id, // only fetch if id exists
+  });
 
   useEffect(() => {
     if (project) {
@@ -64,12 +30,16 @@ const ProjectDetail = () => {
     }
   }, [project]);
 
-  if (!project) {
+  if (isLoading) {
+    return <div><LoadingSpinner></LoadingSpinner></div>;
+  }
+
+  if (isError || !project?._id) {
     return (
-      <div className="text-center py-20">
+      <div className="text-center py-20 text-red-600">
         <p>
           Project not found.{" "}
-          <Link to="/" className="text-teal-600">
+          <Link to="/" className="text-teal-600 underline">
             Go back to the homepage
           </Link>
           .
@@ -79,7 +49,7 @@ const ProjectDetail = () => {
   }
 
   return (
-    <div className="max-w-5xl mx-auto px-6 py-16">
+    <div className="max-w-5xl mx-auto px-6 pt-24 pb-16">
       <img
         src={project.image}
         alt={`${project.title} project screenshot`}
@@ -92,7 +62,7 @@ const ProjectDetail = () => {
       <p className="mt-4 text-gray-700">{project.description}</p>
 
       <div className="mt-6 flex flex-wrap gap-2">
-        {project.tech.map((tech, i) => (
+        {project.tech?.map((tech, i) => (
           <span
             key={i}
             className="bg-teal-100 text-teal-800 px-3 py-1 text-sm rounded-full shadow-md transform transition-all duration-300 hover:bg-teal-200"
