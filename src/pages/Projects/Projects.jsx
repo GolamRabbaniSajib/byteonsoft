@@ -1,58 +1,36 @@
 import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { toast } from "react-hot-toast";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const Projects = () => {
-  const projects = [
-    {
-      id: 1,
-      title: "Neurolingva",
-      description:
-        "A neuroscience-powered language learning app using spaced repetition, interactive quizzes, and pronunciation feedback.",
-      image: "https://i.ibb.co/ZVR6WPF/neurolingva.png",
-      liveLink: "https://neurolingva.vercel.app",
-      githubLink: "https://github.com/neurolingva/app",
-      tech: ["React.js", "Tailwind CSS", "Node.js", "MongoDB", "Google Cloud"],
+  const axiosPublic = useAxiosPublic();
+
+  const {
+    data: projects = [],
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["projects"],
+    queryFn: async () => {
+      const res = await axiosPublic.get("/all-projects");
+      return res.data;
     },
-    {
-      id: 2,
-      title: "Parcel Pulse",
-      description:
-        "A parcel management system for tracking deliveries and managing shipments with a user-friendly dashboard.",
-      image: "https://i.ibb.co/DgY1DwS/parcel-pulse.png",
-      liveLink: "https://parcelpulse.netlify.app",
-      githubLink: "https://github.com/sajibdev/parcel-pulse",
-      tech: ["Express.js", "MongoDB", "React.js", "Firebase", "JWT"],
-    },
-    {
-      id: 3,
-      title: "Moodify",
-      description:
-        "A mood-based recommendation platform that suggests content based on your emotions using sentiment analysis.",
-      image: "https://i.ibb.co/M7tvF3X/moodify.png",
-      liveLink: "https://moodify.me",
-      githubLink: "https://github.com/sajibdev/moodify",
-      tech: ["Next.js", "Tailwind", "Supabase", "OpenAI API"],
-    },
-    {
-      id: 4,
-      title: "TaskFlow",
-      description:
-        "A real-time task management tool with drag-and-drop functionality, Firebase authentication, and dark mode support.",
-      image: "https://i.ibb.co/jrwCzFz/taskflow.png",
-      liveLink: "https://taskflow.app",
-      githubLink: "https://github.com/sajibdev/taskflow",
-      tech: ["Vite.js", "React", "Firebase", "Tailwind CSS", "MongoDB"],
-    },
-    {
-      id: 5,
-      title: "ByteonSoft Portfolio",
-      description:
-        "A full-featured dynamic portfolio website for ByteonSoft, complete with admin dashboard and content management.",
-      image: "https://i.ibb.co/YWjBk1x/byteonsoft.png",
-      liveLink: "https://byteonsoft.com",
-      githubLink: "https://github.com/sajibdev/byteonsoft-portfolio",
-      tech: ["React", "Tailwind CSS", "Django", "PostgreSQL", "Tawk.to"],
-    },
-  ];
+    onError: () => toast.error("Failed to load projects"),
+  });
+
+  if (isLoading) {
+    return <div className="text-center py-20">Loading projects...</div>;
+  }
+
+  if (isError) {
+    return (
+      <div className="text-center text-red-500 py-20">
+        Error: {error.message}
+      </div>
+    );
+  }
 
   return (
     <section className="bg-white py-20 px-6 md:px-10 lg:px-20">
@@ -66,7 +44,7 @@ const Projects = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects.map((project) => (
             <div
-              key={project.id}
+              key={project._id}
               className="bg-white rounded-2xl shadow-lg overflow-hidden border hover:scale-[1.02] transition-all duration-300 animate-fade-in-up"
             >
               <img
@@ -82,7 +60,7 @@ const Projects = () => {
                   {project.description}
                 </p>
                 <div className="flex flex-wrap gap-2 mt-4">
-                  {project.tech.map((tech, i) => (
+                  {project.tech?.map((tech, i) => (
                     <span
                       key={i}
                       className="text-xs px-2 py-1 bg-teal-100 text-teal-800 rounded-full"
@@ -110,7 +88,7 @@ const Projects = () => {
                     GitHub
                   </a>
                   <Link
-                    to={`/projects/${project.id}`}
+                    to={`/projects/${project._id}`}
                     className="px-4 py-2 border border-teal-600 text-teal-700 text-sm rounded-md hover:bg-teal-50 transition"
                   >
                     View Details

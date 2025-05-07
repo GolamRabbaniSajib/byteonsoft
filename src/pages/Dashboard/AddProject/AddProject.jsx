@@ -1,4 +1,6 @@
 import { useState } from "react";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import toast from "react-hot-toast";
 
 const AddProject = () => {
   const [formData, setFormData] = useState({
@@ -11,6 +13,7 @@ const AddProject = () => {
   });
 
   const [techInput, setTechInput] = useState("");
+  const axiosSecure = useAxiosSecure();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -38,10 +41,25 @@ const AddProject = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Project Submitted:", formData);
-    // TODO: Connect with backend API to save the project
+    try {
+      const response = await axiosSecure.post("/projects", formData);
+      console.log("Project added successfully:", response.data);
+      toast.success("✅ Project submitted successfully!");
+      setFormData({
+        title: "",
+        description: "",
+        image: "",
+        liveLink: "",
+        githubLink: "",
+        tech: [],
+      });
+      setTechInput("");
+    } catch (error) {
+      console.error("Error adding project:", error);
+      toast.error("❌ Failed to submit project. Please try again.");
+    }
   };
 
   return (
@@ -53,7 +71,9 @@ const AddProject = () => {
       >
         {/* Title */}
         <div>
-          <label className="block text-gray-700 font-medium mb-1">Project Title</label>
+          <label className="block text-gray-700 font-medium mb-1">
+            Project Title
+          </label>
           <input
             type="text"
             name="title"
@@ -66,7 +86,9 @@ const AddProject = () => {
 
         {/* Description */}
         <div>
-          <label className="block text-gray-700 font-medium mb-1">Description</label>
+          <label className="block text-gray-700 font-medium mb-1">
+            Description
+          </label>
           <textarea
             name="description"
             rows="4"
@@ -79,7 +101,9 @@ const AddProject = () => {
 
         {/* Image */}
         <div>
-          <label className="block text-gray-700 font-medium mb-1">Image URL</label>
+          <label className="block text-gray-700 font-medium mb-1">
+            Image URL
+          </label>
           <input
             type="url"
             name="image"
@@ -93,7 +117,9 @@ const AddProject = () => {
 
         {/* Live Link */}
         <div>
-          <label className="block text-gray-700 font-medium mb-1">Live Link</label>
+          <label className="block text-gray-700 font-medium mb-1">
+            Live Link
+          </label>
           <input
             type="url"
             name="liveLink"
@@ -107,7 +133,9 @@ const AddProject = () => {
 
         {/* GitHub Link */}
         <div>
-          <label className="block text-gray-700 font-medium mb-1">GitHub Link</label>
+          <label className="block text-gray-700 font-medium mb-1">
+            GitHub Link
+          </label>
           <input
             type="url"
             name="githubLink"
@@ -119,9 +147,11 @@ const AddProject = () => {
           />
         </div>
 
-        {/* Tech Stack (Tag Input) */}
+        {/* Tech Stack */}
         <div>
-          <label className="block text-gray-700 font-medium mb-1">Tech Stack</label>
+          <label className="block text-gray-700 font-medium mb-1">
+            Tech Stack
+          </label>
           <div className="flex flex-wrap gap-2 mb-2">
             {formData.tech.map((tag, index) => (
               <span
