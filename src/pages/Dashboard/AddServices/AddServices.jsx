@@ -1,4 +1,5 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 import {
   FaCode,
   FaDesktop,
@@ -22,8 +23,11 @@ import {
   FaFingerprint,
   FaUserShield,
 } from "react-icons/fa";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const AddServices = () => {
+  const axiosSecure = useAxiosSecure();
+
   const [serviceData, setServiceData] = useState({
     title: "",
     icon: "Web Development",
@@ -39,11 +43,17 @@ const AddServices = () => {
     setServiceData({ ...serviceData, icon: iconName });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Service Submitted:", serviceData);
-    setServiceData({ title: "", icon: "Web Development", description: "" });
-    alert("Service added successfully!");
+    try {
+      const res = await axiosSecure.post("/services", serviceData);
+      console.log("Service Submitted:", res.data);
+      toast.success(" Service added successfully!");
+      setServiceData({ title: "", icon: "Web Development", description: "" });
+    } catch (error) {
+      console.error("❌ Failed to submit service:", error);
+      toast.error("Failed to add service. Please try again.");
+    }
   };
 
   const icons = [
