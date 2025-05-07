@@ -1,46 +1,58 @@
 import { useParams } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
+import LoadingSpinner from "../../components/Shared/LoadingSpinner";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const BlogDetails = () => {
-  const blogs = [
-    {
-      id: 1,
-      title: "Why Your Business Needs a Website in 2025",
-      image: "/images/blog1.jpg",
-      date: "April 20, 2025",
-      author: "ByteonSoft Team",
-      content: `In today's digital age, having a website is crucial...\n\nA strong online presence increases your brand’s credibility and helps you connect with a broader audience.`,
-      excerpt:
-        "A website in 2025 isn’t optional – it’s a must-have. Let’s explore why your brand should be online.",
-    },
-    {
-      id: 2,
-      title: "Top 5 UI/UX Trends to Watch in 2025",
-      image: "/images/blog2.jpg",
-      date: "April 18, 2025",
-      author: "Sajib",
-      content: `From micro-interactions to AI-driven design, UI/UX is rapidly evolving...\n\nIn this post, we break down the hottest trends to help you stay ahead.`,
-      excerpt:
-        "Want to stand out with modern design? These 5 trends will define the future of user experiences.",
-    },
-    // Add more blogs as needed
-  ];
-
   const { id } = useParams();
-  const blog = blogs.find((b) => b.id === parseInt(id));
+  const [blog, setBlog] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const axiosPublic = useAxiosPublic();
 
   // Scroll to top on mount
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
 
-  if (!blog)
+    // Fetch blog data when component mounts
+    const fetchBlog = async () => {
+      try {
+        const response = await axiosPublic.get(`/blog/${id}`);
+        setBlog(response.data); // Assuming the API returns blog data in `data`
+        setLoading(false);
+      } catch (error) {
+        setError("Failed to fetch blog details.");
+        setLoading(false);
+      }
+    };
+
+    fetchBlog();
+  }, [id, axiosPublic]);
+
+  if (loading) {
+    return (
+      <div>
+        <LoadingSpinner></LoadingSpinner>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-20 text-gray-500 text-lg animate-fade-in">
+        {error}
+      </div>
+    );
+  }
+
+  if (!blog) {
     return (
       <div className="text-center py-20 text-gray-500 text-lg animate-fade-in">
         Blog not found.
       </div>
     );
+  }
 
   return (
     <>
