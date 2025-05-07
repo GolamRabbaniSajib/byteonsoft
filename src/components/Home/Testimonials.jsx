@@ -1,31 +1,29 @@
+import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/autoplay";
-
-const testimonials = [
-  {
-    name: "Jane Doe",
-    role: "Product Manager at TechCorp",
-    feedback: "This team exceeded our expectations. Outstanding service!",
-    image: "https://i.pravatar.cc/150?img=3",
-  },
-  {
-    name: "John Smith",
-    role: "CEO of StartupX",
-    feedback: "Highly professional and skilled developers. Highly recommended!",
-    image: "https://i.pravatar.cc/150?img=5",
-  },
-  {
-    name: "Emily Johnson",
-    role: "UX Designer",
-    feedback: "Loved the clean UI/UX. Great attention to detail!",
-    image: "https://i.pravatar.cc/150?img=8",
-  },
-];
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const Testimonials = () => {
+  const [testimonials, setTestimonials] = useState([]);
+  const axiosPublic = useAxiosPublic();
+
+  // Fetching testimonials data from API
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        const response = await axiosPublic.get("/all-reviews");
+        setTestimonials(response.data);
+      } catch (error) {
+        console.error("Error fetching testimonials:", error);
+      }
+    };
+
+    fetchTestimonials();
+  }, [axiosPublic]);
+
   return (
     <section className="bg-white py-16 px-4 md:px-20">
       <div className="text-center mb-10">

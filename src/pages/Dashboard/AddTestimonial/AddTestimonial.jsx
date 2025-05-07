@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { FaUserAlt, FaRegUser, FaImage, FaComments } from "react-icons/fa"; // Import icons
+import { FaUserAlt, FaRegUser, FaImage, FaComments } from "react-icons/fa"; 
+import toast from "react-hot-toast";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const AddTestimonial = () => {
   const [formData, setFormData] = useState({
@@ -9,6 +11,8 @@ const AddTestimonial = () => {
     image: "",
   });
 
+  const axiosSecure = useAxiosSecure();
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -16,22 +20,18 @@ const AddTestimonial = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const loadingToast = toast.loading("Adding team review...");
     try {
-      const res = await fetch("https://your-api-url.com/testimonials", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await res.json();
-      if (data.success) {
-        alert("Testimonial submitted successfully!");
-        setFormData({ name: "", role: "", feedback: "", image: "" });
+      const res = await axiosSecure.post("/reviews", formData);
+      if (res.data?.insertedId || res.data?.success) {
+        toast.success("Review added successfully!", { id: loadingToast });
+        setFormData({ name: "", role: "", image: "", intro: "" });
       } else {
-        alert("Failed to submit testimonial.");
+        toast.error("Failed to add Review.", { id: loadingToast });
       }
     } catch (err) {
       console.error("Submit error:", err);
+      toast.error("Something went wrong!", { id: loadingToast });
     }
   };
 
