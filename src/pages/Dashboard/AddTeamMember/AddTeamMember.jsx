@@ -1,4 +1,6 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const AddTeamMember = () => {
   const [formData, setFormData] = useState({
@@ -8,6 +10,8 @@ const AddTeamMember = () => {
     intro: "",
   });
 
+  const axiosSecure = useAxiosSecure();
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -15,22 +19,18 @@ const AddTeamMember = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const loadingToast = toast.loading("Adding team member...");
     try {
-      const res = await fetch("https://your-api-url.com/team", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await res.json();
-      if (data.success) {
-        alert("Team member added successfully!");
+      const res = await axiosSecure.post("/members", formData);
+      if (res.data?.insertedId || res.data?.success) {
+        toast.success("Team member added successfully!", { id: loadingToast });
         setFormData({ name: "", role: "", image: "", intro: "" });
       } else {
-        alert("Failed to add team member.");
+        toast.error("Failed to add team member.", { id: loadingToast });
       }
     } catch (err) {
       console.error("Submit error:", err);
+      toast.error("Something went wrong!", { id: loadingToast });
     }
   };
 
