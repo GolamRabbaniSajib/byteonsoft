@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import { Link, NavLink } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   FaHome,
   FaInfoCircle,
@@ -9,6 +10,8 @@ import {
   FaPhoneAlt,
   FaUserCircle,
   FaSignInAlt,
+  FaBars,
+  FaTimes,
 } from "react-icons/fa";
 import useAuth from "../../../hooks/useAuth";
 
@@ -16,179 +19,241 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const { user, logOut } = useAuth();
+  const dropdownRef = useRef(null);
 
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
+  const toggleMenu = () => setIsOpen(!isOpen);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [dropdownRef]);
+
+  const navLinks = [
+    { to: "/", icon: <FaHome />, text: "Home" },
+    { to: "/about", icon: <FaInfoCircle />, text: "About" },
+    { to: "/services", icon: <FaServicestack />, text: "Services" },
+    { to: "/projects", icon: <FaProjectDiagram />, text: "Projects" },
+    { to: "/blog", icon: <FaBlog />, text: "Blog" },
+    { to: "/contact", icon: <FaPhoneAlt />, text: "Contact" },
+  ];
+
+  const navLinkVariants = {
+    hover: {
+      scale: 1.1,
+      color: "#2dd4bf",
+      transition: { duration: 0.3 },
+    },
+    tap: { scale: 0.95 },
+  };
+
+  const mobileMenuVariants = {
+    hidden: {
+      x: "-100%",
+      opacity: 0,
+    },
+    visible: {
+      x: 0,
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 30,
+      },
+    },
+  };
+
+  const dropdownVariants = {
+    hidden: {
+      opacity: 0,
+      y: -20,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 500,
+        damping: 30,
+      },
+    },
+  };
 
   return (
-    <div>
-      <nav className="bg-[#0a1f44] text-white shadow-md fixed top-0 left-0 w-full z-20">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+    //  MODERN BACKGROUND APPLIED HERE
+    <nav className="fixed top-0 left-0 w-full z-50 bg-slate-900/70 text-white backdrop-blur-lg shadow-xl">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <div className="text-2xl font-bold text-teal-400">
-            <Link to="/">ByteonSoft</Link>
-          </div>
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Link to="/" className="text-3xl font-bold text-teal-400">
+              ByteonSoft
+            </Link>
+          </motion.div>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex space-x-8 text-lg font-medium">
-            <Link
-              to="/"
-              className="flex items-center gap-2 hover:text-teal-300"
-            >
-              <FaHome /> Home
-            </Link>
-            <Link
-              to="/about"
-              className="flex items-center gap-2 hover:text-teal-300"
-            >
-              <FaInfoCircle /> About
-            </Link>
-            <Link
-              to="/services"
-              className="flex items-center gap-2 hover:text-teal-300"
-            >
-              <FaServicestack /> Services
-            </Link>
-            <Link
-              to="/projects"
-              className="flex items-center gap-2 hover:text-teal-300"
-            >
-              <FaProjectDiagram /> Projects
-            </Link>
-            <Link
-              to="/blog"
-              className="flex items-center gap-2 hover:text-teal-300"
-            >
-              <FaBlog /> Blog
-            </Link>
-            <Link
-              to="/contact"
-              className="flex items-center gap-2 hover:text-teal-300"
-            >
-              <FaPhoneAlt /> Contact
-            </Link>
+          <div className="hidden md:flex items-center space-x-6">
+            {navLinks.map((link) => (
+              <motion.div
+                key={link.to}
+                variants={navLinkVariants}
+                whileHover="hover"
+                whileTap="tap"
+              >
+                <NavLink
+                  to={link.to}
+                  className={({ isActive }) =>
+                    `flex items-center gap-2 text-lg font-medium transition-colors duration-300 ${
+                      isActive ? "text-teal-400" : "hover:text-teal-300"
+                    }`
+                  }
+                >
+                  {link.icon} {link.text}
+                </NavLink>
+              </motion.div>
+            ))}
           </div>
 
           {/* User Section */}
-          <div className="flex items-center gap-4">
+          <div className="hidden md:flex items-center">
             {user ? (
-              <div className="relative">
-                {/* User Image or Icon */}
-                <button onClick={toggleDropdown} className="text-xl">
+              <div className="relative" ref={dropdownRef}>
+                <button onClick={toggleDropdown} className="focus:outline-none">
                   {user.photoURL ? (
                     <img
                       src={user.photoURL}
                       alt="User"
-                      className="w-10 h-10 rounded-full"
+                      className="w-12 h-12 rounded-full border-2 border-teal-400 object-cover"
                     />
                   ) : (
-                    <FaUserCircle className="w-10 h-10 text-teal-400" />
+                    <FaUserCircle className="w-12 h-12 text-teal-400" />
                   )}
                 </button>
-
-                {/* Dropdown Menu */}
-                {dropdownOpen && (
-                  <div className="absolute right-0 mt-2 bg-white text-black shadow-lg rounded-md w-48 opacity-100 transition-opacity duration-300 ease-in-out">
-                    <Link
-                      to="/dashboard"
-                      className="block px-4 py-2 text-sm hover:bg-teal-200"
+                <AnimatePresence>
+                  {dropdownOpen && (
+                    <motion.div
+                      initial="hidden"
+                      animate="visible"
+                      exit="hidden"
+                      variants={dropdownVariants}
+                      className="absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded-md shadow-lg overflow-hidden"
                     >
-                      Dashboard
-                    </Link>
-                    <button
-                      onClick={logOut}
-                      className="w-full text-left px-4 py-2 text-sm hover:bg-teal-200"
-                    >
-                      Logout
-                    </button>
-                  </div>
-                )}
+                      <Link
+                        to="/dashboard"
+                        className="block px-4 py-3 text-sm hover:bg-teal-100"
+                      >
+                        Dashboard
+                      </Link>
+                      <button
+                        onClick={() => {
+                          logOut();
+                          setDropdownOpen(false);
+                        }}
+                        className="w-full text-left px-4 py-3 text-sm hover:bg-teal-100"
+                      >
+                        Logout
+                      </button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             ) : (
-              <Link
-                to="/login"
-                className="text-lg text-teal-400 hover:text-teal-300 transition-all flex items-center gap-2"
-              >
-                <FaSignInAlt className="text-xl" /> Login
-              </Link>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Link
+                  to="/login"
+                  className="flex items-center gap-2 text-lg font-semibold text-teal-400 hover:text-teal-300 transition-colors duration-300"
+                >
+                  <FaSignInAlt /> Login
+                </Link>
+              </motion.div>
             )}
           </div>
 
           {/* Mobile Menu Button */}
           <div className="md:hidden">
             <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="text-white focus:outline-none"
+              onClick={toggleMenu}
+              className="text-white focus:outline-none text-2xl"
             >
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2}
-                viewBox="0 0 24 24"
-              >
-                {isOpen ? (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                ) : (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                )}
-              </svg>
+              {isOpen ? <FaTimes /> : <FaBars />}
             </button>
           </div>
         </div>
+      </div>
 
-        {/* Mobile Menu */}
-        <div
-          className={`${
-            isOpen ? "block" : "hidden"
-          } md:hidden px-4 py-6 space-y-4 bg-[#0a1f44] transition-all`}
-        >
-          <Link
-            to="/"
-            className="text-white text-xl flex items-center gap-2 hover:text-teal-300"
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+            variants={mobileMenuVariants}
+            className="md:hidden bg-slate-900/90 backdrop-blur-lg" // Matching modern bg
           >
-            <FaHome /> Home
-          </Link>
-          <Link
-            to="/about"
-            className="text-white text-xl flex items-center gap-2 hover:text-teal-300"
-          >
-            <FaInfoCircle /> About
-          </Link>
-          <Link
-            to="/services"
-            className="text-white text-xl flex items-center gap-2 hover:text-teal-300"
-          >
-            <FaServicestack /> Services
-          </Link>
-          <Link
-            to="/projects"
-            className="text-white text-xl flex items-center gap-2 hover:text-teal-300"
-          >
-            <FaProjectDiagram /> Projects
-          </Link>
-          <Link
-            to="/blog"
-            className="text-white text-xl flex items-center gap-2 hover:text-teal-300"
-          >
-            <FaBlog /> Blog
-          </Link>
-          <Link
-            to="/contact"
-            className="text-white text-xl flex items-center gap-2 hover:text-teal-300"
-          >
-            <FaPhoneAlt /> Contact
-          </Link>
-        </div>
-      </nav>
-    </div>
+            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+              {navLinks.map((link) => (
+                <NavLink
+                  key={link.to}
+                  to={link.to}
+                  onClick={() => setIsOpen(false)}
+                  className={({ isActive }) =>
+                    `flex items-center gap-3 px-3 py-2 rounded-md text-base font-medium ${
+                      isActive
+                        ? "bg-teal-500 text-white"
+                        : "text-gray-300 hover:bg-gray-700 hover:text-white"
+                    }`
+                  }
+                >
+                  {link.icon} {link.text}
+                </NavLink>
+              ))}
+              <div className="pt-4 pb-3 border-t border-gray-700">
+                {user ? (
+                  <div className="flex items-center px-5">
+                    <div className="flex-shrink-0">
+                      {user.photoURL ? (
+                        <img
+                          className="h-10 w-10 rounded-full object-cover"
+                          src={user.photoURL}
+                          alt="User"
+                        />
+                      ) : (
+                        <FaUserCircle className="w-10 h-10 text-teal-400" />
+                      )}
+                    </div>
+                    <div className="ml-3">
+                      <div className="text-base font-medium leading-none text-white">
+                        {user.displayName}
+                      </div>
+                      <div className="text-sm font-medium leading-none text-gray-400 mt-1">
+                        {user.email}
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <NavLink
+                    to="/login"
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center gap-3 px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+                  >
+                    <FaSignInAlt /> Login
+                  </NavLink>
+                )}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </nav>
   );
 };
 

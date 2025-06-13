@@ -62,7 +62,7 @@ const Projects = () => {
                   {project.title}
                 </h3>
                 <p className="text-gray-600 mt-2 text-sm">
-                  {project.description}
+                  {project.description.substring(0, 100)}...
                 </p>
                 <div className="flex flex-wrap gap-2 mt-4">
                   {project.tech?.map((tech, i) => (
