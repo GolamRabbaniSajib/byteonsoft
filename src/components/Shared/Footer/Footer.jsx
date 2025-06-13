@@ -1,127 +1,127 @@
-import { Helmet } from "react-helmet-async";
-import { FaFacebookF, FaTwitter, FaLinkedinIn, FaGithub } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { motion } from 'framer-motion';
+import { FaFacebookF, FaTwitter, FaLinkedinIn, FaGithub } from 'react-icons/fa';
 
 const Footer = () => {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.15, delayChildren: 0.2 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: { type: 'spring', stiffness: 100 }
+    }
+  };
+
+  const socialIconHover = {
+    scale: 1.2,
+    transition: { type: 'spring', stiffness: 400 }
+  };
+
+  const navLinks = [
+    { name: 'Home', path: '/' },
+    { name: 'About', path: '/about' },
+    { name: 'Services', path: '/services' },
+    { name: 'Projects', path: '/projects' },
+    { name: 'Contact', path: '/contact' }
+  ];
+
+  const socialLinks = [
+    { icon: <FaFacebookF />, href: 'https://facebook.com', label: 'Facebook' },
+    { icon: <FaTwitter />, href: 'https://twitter.com', label: 'Twitter' },
+    { icon: <FaLinkedinIn />, href: 'https://linkedin.com', label: 'LinkedIn' },
+    { icon: <FaGithub />, href: 'https://github.com', label: 'GitHub' }
+  ];
+
   return (
-    <>
-      <Helmet>
-        <title>Footer | ByteonSoft</title>
-        <meta
-          name="description"
-          content="Connect with ByteonSoft on our social media platforms or explore our website for more about our services and projects."
-        />
-        <meta
-          name="keywords"
-          content="footer, ByteonSoft, social media, services, projects"
-        />
-        <meta property="og:title" content="Footer | ByteonSoft" />
-        <meta
-          property="og:description"
-          content="Connect with ByteonSoft on our social media platforms or explore our website for more about our services and projects."
-        />
-      </Helmet>
-
-      <footer className="bg-[#0a1f44] text-white pt-12 pb-6">
-        <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Brand + Description */}
-          <div>
-            <h2 className="text-2xl font-bold text-teal-400 mb-2">
-              ByteonSoft
-            </h2>
-            <p className="text-gray-300">
-              Crafting powerful digital solutions. From idea to implementation,
-              we bring your vision to life.
+    <footer className="bg-slate-900 text-slate-300 font-sans">
+      <motion.div
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12"
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.3 }}
+      >
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+          <motion.div className="md:col-span-4" variants={itemVariants}>
+            <h2 className="text-2xl font-bold text-white mb-2">ByteonSoft</h2>
+            <p className="text-slate-400">
+              Crafting powerful digital solutions. From idea to implementation, we bring your vision to life.
             </p>
-          </div>
+          </motion.div>
 
-          {/* Navigation */}
-          <div>
-            <h3 className="text-xl font-semibold mb-3 text-teal-300">
-              Quick Links
-            </h3>
-            <ul className="space-y-2 text-gray-300">
-              <li>
-                <Link to="/" className="hover:text-white">
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link to="/about" className="hover:text-white">
-                  About
-                </Link>
-              </li>
-              <li>
-                <Link to="/services" className="hover:text-white">
-                  Services
-                </Link>
-              </li>
-              <li>
-                <Link to="/projects" className="hover:text-white">
-                  Projects
-                </Link>
-              </li>
-              <li>
-                <Link to="/contact" className="hover:text-white">
-                  Contact
-                </Link>
-              </li>
+          <motion.div className="md:col-span-2" variants={itemVariants}>
+            <h3 className="text-lg font-semibold mb-4 text-white">Menu</h3>
+            <ul className="space-y-2">
+              {navLinks.map(({ name, path }) => (
+                <li key={name}>
+                  <a href={path} className="hover:text-purple-400 transition-colors">
+                    {name}
+                  </a>
+                </li>
+              ))}
             </ul>
-          </div>
+          </motion.div>
 
-          {/* Social Media */}
-          <div>
-            <h3 className="text-xl font-semibold mb-3 text-teal-300">
-              Follow Us
-            </h3>
-            <div className="flex gap-4 text-gray-300">
-              <a
-                href="https://facebook.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-white"
-                aria-label="Facebook"
+          <motion.div className="md:col-span-3" variants={itemVariants}>
+            <h3 className="text-lg font-semibold mb-4 text-white">Join Our Newsletter</h3>
+            <p className="text-slate-400 mb-4 text-sm">
+              Get the latest updates on projects and articles.
+            </p>
+            <form className="flex">
+              <input
+                type="email"
+                placeholder="Your email"
+                className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-l-md focus:outline-none focus:ring-2 focus:ring-purple-500 text-white"
+              />
+              <button
+                type="submit"
+                className="bg-purple-600 text-white font-semibold px-4 py-2 rounded-r-md hover:bg-purple-700 transition-colors"
               >
-                <FaFacebookF size={20} />
-              </a>
-              <a
-                href="https://twitter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-white"
-                aria-label="Twitter"
-              >
-                <FaTwitter size={20} />
-              </a>
-              <a
-                href="https://linkedin.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-white"
-                aria-label="LinkedIn"
-              >
-                <FaLinkedinIn size={20} />
-              </a>
-              <a
-                href="https://github.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-white"
-                aria-label="GitHub"
-              >
-                <FaGithub size={20} />
-              </a>
+                Subscribe
+              </button>
+            </form>
+          </motion.div>
+
+          <motion.div className="md:col-span-3" variants={itemVariants}>
+            <h3 className="text-lg font-semibold mb-4 text-white">Follow Us</h3>
+            <div className="flex space-x-4">
+              {socialLinks.map(({ icon, href, label }) => (
+                <motion.a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-3 bg-slate-800 rounded-full hover:bg-purple-600 transition-colors"
+                  aria-label={label}
+                  whileHover={socialIconHover}
+                >
+                  {icon}
+                </motion.a>
+              ))}
             </div>
-          </div>
+          </motion.div>
         </div>
 
-        {/* Bottom */}
-        <div className="text-center text-gray-400 mt-10 text-sm border-t border-gray-700 pt-4">
+        <div className="text-center text-slate-500 mt-12 text-sm border-t border-slate-800 pt-8">
           © {new Date().getFullYear()} ByteonSoft. All rights reserved.
         </div>
-      </footer>
-    </>
+      </motion.div>
+    </footer>
   );
 };
 
-export default Footer;
+const App = () => (
+  <div className="w-full bg-slate-900">
+    <Footer />
+  </div>
+);
+
+export default App;
