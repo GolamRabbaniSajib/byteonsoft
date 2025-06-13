@@ -38,7 +38,7 @@ const Projects = () => {
   }
 
   return (
-    <section className="bg-white pt-24 pb-20 px-6 md:px-10 lg:px-20">
+    <section className="bg-slate-50 pt-24 pb-20 px-6 md:px-10 lg:px-20">
       <div className="max-w-7xl mx-auto text-center space-y-12">
         <header>
           <h2 className="text-4xl md:text-5xl font-bold text-[#0a1f44] animate-fade-in-up">
