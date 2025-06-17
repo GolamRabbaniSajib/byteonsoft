@@ -1,120 +1,178 @@
-import { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
-import { AiOutlineBars } from "react-icons/ai";
+import { useState, useEffect } from 'react';
+import { Link, NavLink } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+
+import {
+  AiOutlineBars,
+  AiOutlineLeft,
+  AiOutlineRight,
+} from 'react-icons/ai';
 import {
   MdContactMail,
   MdHomeRepairService,
   MdRateReview,
   MdPeopleAlt,
-} from "react-icons/md";
-import { FaBlogger } from "react-icons/fa";
-import { BsToggleOn } from "react-icons/bs";
+  MdDashboard,
+} from 'react-icons/md';
+import { FaBlogger } from 'react-icons/fa';
+import { BsToggleOn } from 'react-icons/bs';
+
+// Sidebar nav data
+const navSections = [
+  {
+    title: 'Dashboard',
+    items: [{ to: '/dashboard', icon: <MdDashboard className="text-xl" />, label: 'Overview' }],
+  },
+  {
+    title: 'Content Management',
+    items: [
+      { to: '/dashboard/add-service', icon: <MdHomeRepairService className="text-xl" />, label: 'Add Service' },
+      { to: '/dashboard/add-project', icon: <MdHomeRepairService className="text-xl" />, label: 'Add Project' },
+      { to: '/dashboard/add-blog', icon: <FaBlogger className="text-xl" />, label: 'Add Blog Post' },
+      { to: '/dashboard/add-testimonial', icon: <MdRateReview className="text-xl" />, label: 'Add Testimonial' },
+      { to: '/dashboard/add-team-member', icon: <MdPeopleAlt className="text-xl" />, label: 'Add Team Member' },
+    ],
+  },
+  {
+    title: 'Administration',
+    items: [
+      { to: '/dashboard/contact-inbox', icon: <MdContactMail className="text-xl" />, label: 'Contact Inbox' },
+      { to: '/dashboard/homepage-sections', icon: <BsToggleOn className="text-xl" />, label: 'Toggle Sections' },
+    ],
+  },
+];
+
+// Framer Motion Variants
+const sidebarVariants = {
+  open: (isMobile) => ({
+    x: 0,
+    width: isMobile ? 288 : 288,
+    transition: { type: 'spring', stiffness: 300, damping: 30 },
+  }),
+  closed: (isMobile) => ({
+    x: isMobile ? '-100%' : 0,
+    width: isMobile ? 0 : 72,
+    transition: { type: 'spring', stiffness: 300, damping: 30 },
+  }),
+};
+
+const navTextVariants = {
+  open: { opacity: 1, x: 0, display: 'block', transition: { delay: 0.1 } },
+  closed: { opacity: 0, x: -10, transitionEnd: { display: 'none' } },
+};
 
 const Sidebar = () => {
-  const [isActive, setActive] = useState(false);
-  const handleToggle = () => setActive(!isActive);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [isOpen, setIsOpen] = useState(!isMobile);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      setIsOpen(!mobile);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const toggleSidebar = () => setIsOpen((prev) => !prev);
 
   const linkStyle = ({ isActive }) =>
-    isActive
-      ? "flex items-center gap-3 bg-teal-600 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300 transform scale-105"
-      : "flex items-center gap-3 text-gray-700 hover:bg-teal-100 hover:text-teal-600 py-2 px-4 rounded-lg transition-all duration-300 transform hover:scale-105";
+    `flex items-center gap-3 py-2 px-4 rounded-lg text-sm font-medium transition-all duration-200 ${
+      isActive
+        ? 'bg-teal-600 text-white shadow'
+        : 'text-gray-600 hover:bg-teal-50 hover:text-teal-700'
+    }`;
 
   return (
     <>
-      {/* Mobile Navbar */}
-      <header className="bg-white shadow-md text-gray-800 flex justify-between items-center px-6 py-4 md:hidden">
-        <Link to="/" aria-label="Home">
-          <img
-            src="https://i.ibb.co/4ZXzmq5/logo.png"
-            alt="Logo"
-            className="w-28"
+      {/* Mobile Top Bar */}
+      {isMobile && (
+        <div className="fixed top-0 left-0 w-full flex justify-between items-center bg-white/90 backdrop-blur-md px-4 py-3 z-50 shadow">
+          <Link to="/">
+            <img src="https://i.ibb.co/4ZXzmq5/logo.png" alt="Logo" className="w-24" />
+          </Link>
+          <button onClick={toggleSidebar} className="p-2 rounded-md hover:bg-gray-100">
+            <AiOutlineBars className="text-xl" />
+          </button>
+        </div>
+      )}
+
+      {/* Backdrop for mobile */}
+      <AnimatePresence>
+        {isMobile && isOpen && (
+          <motion.div
+            key="backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.5 }}
+            exit={{ opacity: 0 }}
+            onClick={toggleSidebar}
+            className="fixed inset-0 bg-black z-40"
           />
-        </Link>
-        <button
-          onClick={handleToggle}
-          className="p-2 rounded-md hover:bg-gray-100 transition ease-in-out"
-          aria-label="Toggle sidebar"
-        >
-          <AiOutlineBars className="h-6 w-6 text-gray-800" />
-        </button>
-      </header>
+        )}
+      </AnimatePresence>
 
       {/* Sidebar */}
-      <aside
-        className={`z-30 md:fixed bg-white shadow-xl w-72 min-h-screen flex flex-col justify-between px-6 py-8 absolute inset-y-0 left-0 transform ${
-          isActive ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0 transition-transform duration-500 ease-out`}
-        role="navigation"
-        aria-label="Sidebar"
+      <motion.aside
+        key="sidebar"
+        custom={isMobile}
+        variants={sidebarVariants}
+        initial={false}
+        animate={isOpen ? 'open' : 'closed'}
+        className={`fixed z-50 top-0 left-0 h-screen bg-white shadow-lg border-r flex flex-col transition-all ${
+          isMobile ? 'pt-16' : 'pt-8'
+        }`}
       >
-        {/* Logo */}
-        <div className="hidden md:flex justify-center mb-8">
-          <Link to="/" aria-label="Home">
-            <img
-              src="https://i.ibb.co/4ZXzmq5/logo.png"
-              alt="Logo"
-              className="w-32"
-            />
-          </Link>
+        {/* Logo & Collapse Button */}
+        <div className={`flex items-center justify-between ${isOpen ? 'px-4' : 'justify-center'} mb-6`}>
+          {isOpen && (
+            <Link to="/" className="block">
+              <motion.img
+                src="https://i.ibb.co/4ZXzmq5/logo.png"
+                alt="Logo"
+                className="w-24"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+              />
+            </Link>
+          )}
+          {!isMobile && (
+            <button onClick={toggleSidebar} className="p-2 rounded-full hover:bg-gray-100">
+              {isOpen ? <AiOutlineLeft size={20} /> : <AiOutlineRight size={20} />}
+            </button>
+          )}
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 space-y-6">
-          <ul className="space-y-6 text-sm font-medium">
-            {/* Services */}
-            <li>
-              <NavLink to="/dashboard/add-service" className={linkStyle}>
-                <MdHomeRepairService className="text-lg" />
-                Add Service
-              </NavLink>
-            </li>
-
-            {/* Content */}
-            <li>
-              <NavLink to="/dashboard/add-blog" className={linkStyle}>
-                <FaBlogger className="text-lg" />
-                Add Blog Post
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/dashboard/add-testimonial" className={linkStyle}>
-                <MdRateReview className="text-lg" />
-                Add Testimonial
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/dashboard/add-team-member" className={linkStyle}>
-                <MdPeopleAlt className="text-lg" />
-                Add Team Member
-              </NavLink>
-            </li>
-
-            {/* Add Project */}
-            <li>
-              <NavLink to="/dashboard/add-project" className={linkStyle}>
-                <MdHomeRepairService className="text-lg" />
-                Add Project
-              </NavLink>
-            </li>
-
-            {/* Contact */}
-            <li>
-              <NavLink to="/dashboard/contact-inbox" className={linkStyle}>
-                <MdContactMail className="text-lg" />
-                Contact Inbox
-              </NavLink>
-            </li>
-
-            {/* Homepage Control */}
-            <li>
-              <NavLink to="/dashboard/homepage-sections" className={linkStyle}>
-                <BsToggleOn className="text-lg" />
-                Toggle Sections
-              </NavLink>
-            </li>
-          </ul>
+        <nav className="px-2 space-y-5 overflow-y-auto pb-6">
+          {navSections.map((section, idx) => (
+            <div key={idx}>
+              {isOpen && (
+                <motion.h4
+                  variants={navTextVariants}
+                  className="text-xs font-bold uppercase text-gray-400 px-3 mb-2 tracking-wide"
+                >
+                  {section.title}
+                </motion.h4>
+              )}
+              <ul className="space-y-1">
+                {section.items.map((item, i) => (
+                  <li key={i}>
+                    <NavLink
+                      to={item.to}
+                      className={linkStyle}
+                      onClick={isMobile ? toggleSidebar : undefined}
+                    >
+                      {item.icon}
+                      <motion.span variants={navTextVariants}>{item.label}</motion.span>
+                    </NavLink>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </nav>
-      </aside>
+      </motion.aside>
     </>
   );
 };
